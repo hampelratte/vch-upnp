@@ -41,14 +41,15 @@ public class Browse implements UPnPAction {
     private Result result = new Result();
     private UpdateID updateID = new UpdateID();
     private Map<String, UPnPStateVariable> variables = new HashMap<String, UPnPStateVariable>();
-    
+
     private BundleContext ctx = Activator.context;
-    private ServiceTracker parserTracker = new ServiceTracker(ctx, IParserService.class.getName(), null);
-    private ServiceTracker i18nTracker = new ServiceTracker(ctx, Messages.class.getName(), null);
-    private ServiceTracker protos = new ServiceTracker(ctx, INetworkProtocol.class.getName(), null);;
-    
+    private ServiceTracker<IParserService, IParserService> parserTracker = new ServiceTracker<IParserService, IParserService>(ctx, IParserService.class, null);
+    private ServiceTracker<Messages, Messages> i18nTracker = new ServiceTracker<Messages, Messages>(ctx, Messages.class, null);
+    private ServiceTracker<INetworkProtocol, INetworkProtocol> protos = new ServiceTracker<INetworkProtocol, INetworkProtocol>(ctx, INetworkProtocol.class,
+            null);
+
     private long updateId = 0;
-    
+
     public Browse() {
         variables.put("ObjectID", objectID);
         variables.put("BrowseFlag", browseFlag);
@@ -60,15 +61,15 @@ public class Browse implements UPnPAction {
         variables.put("NumberReturned", count);
         variables.put("TotalMatches", count);
         variables.put("UpdateID", updateID);
-        
+
         parserTracker.open();
         i18nTracker.open();
         protos.open();
     }
-    
+
     @Override
     public String[] getInputArgumentNames() {
-        return new String[] {"ObjectID", "BrowseFlag", "Filter", "StartingIndex", "RequestedCount", "SortCriteria"};
+        return new String[] { "ObjectID", "BrowseFlag", "Filter", "StartingIndex", "RequestedCount", "SortCriteria" };
     }
 
     @Override
@@ -78,7 +79,7 @@ public class Browse implements UPnPAction {
 
     @Override
     public String[] getOutputArgumentNames() {
-        return new String[] {"Result", "NumberReturned", "TotalMatches", "UpdateID"};
+        return new String[] { "Result", "NumberReturned", "TotalMatches", "UpdateID" };
     }
 
     @Override
@@ -92,31 +93,32 @@ public class Browse implements UPnPAction {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Dictionary invoke(Dictionary args) throws Exception {
         String objectId = (String) args.get("ObjectID");
-        IParserService parserService = (IParserService) parserTracker.getService();
-        if(parserService == null) {
+        IParserService parserService = parserTracker.getService();
+        if (parserService == null) {
             throw new ServiceException("ParserService not available");
         }
 
         // TODO implement the following params? are there devices, which use these params?
-//        String brosweFlag = (String) args.get("BrowseFlag");
-//        String filter = (String) args.get("Filter");
-//        String start = (String) args.get("StartingIndex");
-//        String count = (String) args.get("RequestedCount");
-//        String sort = (String) args.get("SortCriteria");
-        
-        if("0".equals(objectId)) {
+        // String brosweFlag = (String) args.get("BrowseFlag");
+        // String filter = (String) args.get("Filter");
+        // String start = (String) args.get("StartingIndex");
+        // String count = (String) args.get("RequestedCount");
+        // String sort = (String) args.get("SortCriteria");
+
+        if ("0".equals(objectId)) {
             objectId = "vchpage://localhost";
         }
-        
+
         URI vchpage = new URI(objectId);
         IWebPage page = parserService.parse(vchpage);
-        
+
         Hashtable<String, Object> result = new Hashtable<String, Object>();
         result.put("UpdateID", updateId++);
-        
-        if(page instanceof IOverviewPage) {
+
+        if (page instanceof IOverviewPage) {
             IOverviewPage opage = (IOverviewPage) page;
             result.put("Result", XmlRenderer.renderOverview(opage, objectId));
             result.put("NumberReturned", opage.getPages().size());
@@ -128,13 +130,13 @@ public class Browse implements UPnPAction {
             for (Object object : protocols) {
                 INetworkProtocol proto = (INetworkProtocol) object;
                 String scheme = video.getScheme();
-                if(proto.getSchemes().contains(scheme)) {
-                    if(proto.isBridgeNeeded()) {
+                if (proto.getSchemes().contains(scheme)) {
+                    if (proto.isBridgeNeeded()) {
                         video = proto.toBridgeUri(video, page.getUserData());
                     }
                 }
             }
-            
+
             result.put("Result", XmlRenderer.renderVideo(videoPage, video, objectId));
             result.put("NumberReturned", 1);
             result.put("TotalMatches", 1);

@@ -11,13 +11,13 @@ import org.osgi.service.upnp.UPnPStateVariable;
 import de.berlios.vch.upnp.services.contentdirectory.variables.SystemUpdateID;
 
 public class GetSystemUpdateID implements UPnPAction {
-    
+
     private Map<String, UPnPStateVariable> variables = new HashMap<String, UPnPStateVariable>();
-    
+
     public GetSystemUpdateID() {
         variables.put("Id", new SystemUpdateID());
     }
-    
+
     @Override
     public String[] getInputArgumentNames() {
         return null;
@@ -30,7 +30,7 @@ public class GetSystemUpdateID implements UPnPAction {
 
     @Override
     public String[] getOutputArgumentNames() {
-        return new String[] {"Id"};
+        return new String[] { "Id" };
     }
 
     @Override
@@ -44,6 +44,7 @@ public class GetSystemUpdateID implements UPnPAction {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Dictionary invoke(Dictionary args) throws Exception {
         Hashtable<String, String> result = new Hashtable<String, String>();
         result.put("Id", "1");

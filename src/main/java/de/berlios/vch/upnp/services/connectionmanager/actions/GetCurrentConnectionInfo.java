@@ -16,9 +16,9 @@ import de.berlios.vch.upnp.services.connectionmanager.variables.ProtocolInfo;
 import de.berlios.vch.upnp.services.connectionmanager.variables.RcsID;
 
 public class GetCurrentConnectionInfo implements UPnPAction {
-    
+
     private Map<String, UPnPStateVariable> variables = new HashMap<String, UPnPStateVariable>();
-    
+
     public GetCurrentConnectionInfo() {
         variables.put("ConnectionID", new ConnectionID());
         variables.put("RcsID", new RcsID());
@@ -29,10 +29,10 @@ public class GetCurrentConnectionInfo implements UPnPAction {
         variables.put("Direction", new Direction());
         variables.put("Status", new ConnectionStatus());
     }
-    
+
     @Override
     public String[] getInputArgumentNames() {
-        return new String[] {"ConnectionID"};
+        return new String[] { "ConnectionID" };
     }
 
     @Override
@@ -42,8 +42,7 @@ public class GetCurrentConnectionInfo implements UPnPAction {
 
     @Override
     public String[] getOutputArgumentNames() {
-        return new String[] { "RcsID", "AVTransportID", "ProtocolInfo", "PeerConnectionManager", "PeerConnectionID",
-                "Direction", "Status" };
+        return new String[] { "RcsID", "AVTransportID", "ProtocolInfo", "PeerConnectionManager", "PeerConnectionID", "Direction", "Status" };
     }
 
     @Override
@@ -57,6 +56,7 @@ public class GetCurrentConnectionInfo implements UPnPAction {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Dictionary invoke(Dictionary args) throws Exception {
         // TODO implement
         return null;

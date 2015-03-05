@@ -11,10 +11,11 @@ public class Activator implements BundleActivator {
     public static BundleContext context;
 
     @Override
+    @SuppressWarnings("unchecked")
     public void start(BundleContext ctx) throws Exception {
         Activator.context = ctx;
         UPnPDevice device = new VchDevice();
-        context.registerService(UPnPDevice.class.getName(), device, device.getDescriptions(null));
+        context.registerService(UPnPDevice.class, device, device.getDescriptions(null));
     }
 
     @Override

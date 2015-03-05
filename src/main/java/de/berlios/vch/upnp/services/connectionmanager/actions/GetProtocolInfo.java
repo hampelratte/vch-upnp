@@ -17,12 +17,12 @@ public class GetProtocolInfo implements UPnPAction {
     private SourceProtocolInfo sourceProtocolInfo = new SourceProtocolInfo();
     private SinkProtocolInfo sinkProtocolInfo = new SinkProtocolInfo();
     private Map<String, UPnPStateVariable> variables = new HashMap<String, UPnPStateVariable>();
-    
+
     public GetProtocolInfo() {
         variables.put("Source", sourceProtocolInfo);
         variables.put("Sink", sinkProtocolInfo);
     }
-    
+
     @Override
     public String[] getInputArgumentNames() {
         return null;
@@ -35,7 +35,7 @@ public class GetProtocolInfo implements UPnPAction {
 
     @Override
     public String[] getOutputArgumentNames() {
-        return new String[] {"Source", "Sink"};
+        return new String[] { "Source", "Sink" };
     }
 
     @Override
@@ -49,10 +49,13 @@ public class GetProtocolInfo implements UPnPAction {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Dictionary invoke(Dictionary args) throws Exception {
         Hashtable<String, String> result = new Hashtable<String, String>();
         result.put("Sink", "");
-        result.put("Source", "http-get:*:application/octet-stream:*,http-get:*:application/ogg:*,http-get:*:application/vnd:*,http-get:*:application/x-gzip:*,http-get:*:audio/mpeg:*,http-get:*:image/jpeg:*,http-get:*:text/plain:*,http-get:*:video/mp4:*,http-get:*:video/x-flv:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-msvideo:*");
+        result.put(
+                "Source",
+                "http-get:*:application/octet-stream:*,http-get:*:application/ogg:*,http-get:*:application/vnd:*,http-get:*:application/x-gzip:*,http-get:*:audio/mpeg:*,http-get:*:image/jpeg:*,http-get:*:text/plain:*,http-get:*:video/mp4:*,http-get:*:video/x-flv:*,http-get:*:video/x-ms-wmv:*,http-get:*:video/x-msvideo:*");
         return result;
     }
 

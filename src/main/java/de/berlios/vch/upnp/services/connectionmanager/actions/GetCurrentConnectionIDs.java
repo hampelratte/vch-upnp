@@ -10,13 +10,13 @@ import org.osgi.service.upnp.UPnPStateVariable;
 import de.berlios.vch.upnp.services.connectionmanager.variables.CurrentConnectionIDs;
 
 public class GetCurrentConnectionIDs implements UPnPAction {
-    
+
     private Map<String, UPnPStateVariable> variables = new HashMap<String, UPnPStateVariable>();
-    
+
     public GetCurrentConnectionIDs() {
         variables.put("ConnectionIDs", new CurrentConnectionIDs());
     }
-    
+
     @Override
     public String[] getInputArgumentNames() {
         return null;
@@ -43,7 +43,8 @@ public class GetCurrentConnectionIDs implements UPnPAction {
     }
 
     @Override
-    public Dictionary<?,?> invoke(Dictionary args) throws Exception {
+    @SuppressWarnings("rawtypes")
+    public Dictionary<?, ?> invoke(Dictionary args) throws Exception {
         // TODO implement
         return null;
     }

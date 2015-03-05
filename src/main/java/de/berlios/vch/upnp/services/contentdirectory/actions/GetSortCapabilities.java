@@ -13,11 +13,11 @@ import de.berlios.vch.upnp.services.contentdirectory.variables.SearchCapabilitie
 public class GetSortCapabilities implements UPnPAction {
 
     private Map<String, UPnPStateVariable> variables = new HashMap<String, UPnPStateVariable>();
-    
+
     public GetSortCapabilities() {
         variables.put("SortCaps", new SearchCapabilities());
     }
-    
+
     @Override
     public String[] getInputArgumentNames() {
         return null;
@@ -30,7 +30,7 @@ public class GetSortCapabilities implements UPnPAction {
 
     @Override
     public String[] getOutputArgumentNames() {
-        return new String[] {"SortCaps"};
+        return new String[] { "SortCaps" };
     }
 
     @Override
@@ -44,6 +44,7 @@ public class GetSortCapabilities implements UPnPAction {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Dictionary invoke(Dictionary args) throws Exception {
         Hashtable<String, String> result = new Hashtable<String, String>();
         result.put("SortCaps", "");

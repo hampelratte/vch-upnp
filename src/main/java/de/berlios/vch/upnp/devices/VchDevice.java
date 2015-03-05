@@ -20,10 +20,10 @@ public class VchDevice implements UPnPDevice {
 
     private final static String DEVICE_ID = "uuid:VCH-Media-Server";
     private Properties description;
-    
+
     private ConnectionManagerService cms = new ConnectionManagerService();
     private ContentDirectoryService cds = new ContentDirectoryService();
-    
+
     private Map<String, UPnPService> services = new HashMap<String, UPnPService>();
 
     public VchDevice() {
@@ -39,28 +39,23 @@ public class VchDevice implements UPnPDevice {
         description.put(UPnPDevice.FRIENDLY_NAME, "VCH Media Server");
         description.put(UPnPDevice.MANUFACTURER, "VCH Project");
         description.put(UPnPDevice.MANUFACTURER_URL, "http://developer.berlios.de/projects/vch");
-        description.put(UPnPDevice.MODEL_DESCRIPTION, Activator.context.getBundle().getHeaders().get(
-                Constants.BUNDLE_DESCRIPTION));
+        description.put(UPnPDevice.MODEL_DESCRIPTION, Activator.context.getBundle().getHeaders().get(Constants.BUNDLE_DESCRIPTION));
         description.put(UPnPDevice.MODEL_NAME, Activator.context.getBundle().getHeaders().get(Constants.BUNDLE_NAME));
-        description.put(UPnPDevice.MODEL_NUMBER, Activator.context.getBundle().getHeaders().get(
-                Constants.BUNDLE_VERSION));
+        description.put(UPnPDevice.MODEL_NUMBER, Activator.context.getBundle().getHeaders().get(Constants.BUNDLE_VERSION));
         description.put(UPnPDevice.TYPE, "urn:schemas-upnp-org:device:MediaServer:1");
         description.put(UPnPDevice.UDN, DEVICE_ID);
-        
-        description.put(UPnPService.TYPE, new String[] { 
-                "urn:schemas-upnp-org:service:ConnectionManager:1",
-                "urn:schemas-upnp-org:service:ContentDirectory:1" });
-        description.put(UPnPService.ID, new String[] { 
-                "urn:schemas-upnp-org:serviceId:ConnectionManager",
-                "urn:schemas-upnp-org:serviceId:ContentDirectory" });
-        
+
+        description.put(UPnPService.TYPE,
+                new String[] { "urn:schemas-upnp-org:service:ConnectionManager:1", "urn:schemas-upnp-org:service:ContentDirectory:1" });
+        description.put(UPnPService.ID, new String[] { "urn:schemas-upnp-org:serviceId:ConnectionManager", "urn:schemas-upnp-org:serviceId:ContentDirectory" });
+
         String port = Activator.context.getProperty("org.osgi.service.http.port");
         InetAddress inet;
         try {
             inet = InetAddress.getLocalHost();
             String hostname = inet.getHostName();
             // TODO this is the wrong URI
-            description.put(UPnPDevice.PRESENTATION_URL,"http://"+hostname + ":"+port+"/upnp/description/");
+            description.put(UPnPDevice.PRESENTATION_URL, "http://" + hostname + ":" + port + "/upnp/description/");
         } catch (UnknownHostException e) {
             System.out.println("Warning: enable to cacth localhost name");
         }
@@ -68,6 +63,7 @@ public class VchDevice implements UPnPDevice {
     }
 
     @Override
+    @SuppressWarnings("rawtypes")
     public Dictionary getDescriptions(String locale) {
         return description;
     }
@@ -85,7 +81,7 @@ public class VchDevice implements UPnPDevice {
 
     @Override
     public UPnPService[] getServices() {
-        return new UPnPService[] {cms, cds};
+        return new UPnPService[] { cms, cds };
     }
 
 }
