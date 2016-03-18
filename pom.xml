@@ -3,7 +3,7 @@
     <modelVersion>4.0.0</modelVersion>
     <artifactId>upnp</artifactId>
     <packaging>bundle</packaging>
-    <version>1.1.0</version>
+    <version>1.1.1-SNAPSHOT</version>
     <name>VCH UPnP MediaServer DCP</name>
     <description>An UPnP MediaServer, which serves the parsed contents via UPnP</description>
 
